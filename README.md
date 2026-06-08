@@ -36,7 +36,6 @@ You can also open `main.py` in Spyder and run it directly. It runs the whole pro
 After running, the project saves:
 
 ```text
-figures/graphical_abstract.png
 figures/trajectory_3d.png
 figures/position_error.png
 figures/altitude_estimate.png
