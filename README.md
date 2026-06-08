@@ -15,28 +15,6 @@ The script simulates a drone flying through a smooth 3D path. Then it adds reali
 
 The EKF uses the IMU for prediction, then updates the estimate using GPS and barometer data. A simple gate checks the GPS residual before accepting a GPS update. This helps prevent large GPS spikes from pulling the estimate away from the real trajectory.
 
-## Why I built it
-
-I wanted a project that was more useful than a basic Kalman filter example. This version has a few things that show up in real robotics work: sensor noise, bad measurements, state prediction, measurement updates, and performance checks over multiple runs.
-
-## Project structure
-
-```text
-3d_drone_ekf_sensor_fusion/
-├── main.py
-├── config.py
-├── requirements.txt
-├── README.md
-├── src/
-│   ├── ekf.py
-│   ├── metrics.py
-│   ├── monte_carlo.py
-│   ├── plots.py
-│   └── simulate_drone.py
-├── figures/
-└── outputs/
-```
-
 ## How to run
 
 Install the requirements:

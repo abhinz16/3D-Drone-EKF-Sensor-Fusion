@@ -19,7 +19,7 @@ from src.simulate_drone import make_dataset
 from src.ekf import run_filter
 from src.metrics import position_rmse, gps_rmse, axis_rmse
 from src.plots import (
-    ensure_dir, make_graphical_abstract, plot_3d,
+    ensure_dir, plot_3d,
     plot_position_errors, plot_altitude,
 )
 from src.monte_carlo import run_monte_carlo
@@ -103,7 +103,6 @@ def main():
     save_main_csv(os.path.join(out_dir, "flight_estimation_results.csv"), data, estimate, gps_used, gate_scores)
 
     plot_jobs = [
-        ("graphical abstract", lambda: make_graphical_abstract(os.path.join(fig_dir, "graphical_abstract.png"))),
         ("3D trajectory", lambda: plot_3d(data["time"], data["truth"], data["gps"], estimate, gps_used,
                                           os.path.join(fig_dir, "trajectory_3d.png"))),
         ("position error", lambda: plot_position_errors(data["time"], data["truth"], data["gps"], estimate,
@@ -125,7 +124,6 @@ def main():
     print(f"Average EKF RMSE: {avg_ekf:.3f} m")
 
     print("\nSaved files:")
-    print(" - figures/graphical_abstract.png")
     print(" - figures/trajectory_3d.png")
     print(" - figures/position_error.png")
     print(" - figures/altitude_estimate.png")
