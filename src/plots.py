@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 def ensure_dir(path):
     os.makedirs(path, exist_ok=True)
 
-
 def plot_3d(time, truth, gps, estimate, gps_used, save_path):
     fig = plt.figure(figsize=(9, 7))
     ax = fig.add_subplot(111, projection="3d")
