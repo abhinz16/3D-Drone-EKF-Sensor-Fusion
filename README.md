@@ -1,25 +1,36 @@
-# 3D Drone State Estimation using EKF Sensor Fusion
+# 3D Drone State Estimation using Extended Kalman Filter Sensor Fusion
 
-![Graphical Abstract](figures/graphical_abstract.png)
+![Graphical Abstract](graphical_abstract.png)
 
 ## Overview
 
-This project implements a 3D state estimation pipeline for drone flight data using an Extended Kalman Filter (EKF).
+This project implements a multi-sensor state estimation framework for autonomous aerial vehicles using an Extended Kalman Filter (EKF). The system fuses GPS position measurements, IMU acceleration data, and barometric altitude observations to estimate the vehicle state in three dimensions. The implementation supports both real PX4 flight logs and a synthetic simulation environment for testing and benchmarking.
 
-The estimator combines measurements from multiple sensors and produces a filtered estimate of the vehicle position and velocity over time. The project supports both real PX4 flight logs and a synthetic simulation environment for testing.
+The project focuses on practical state estimation challenges including sensor noise, measurement outliers, uncertainty propagation, and trajectory reconstruction. It provides a reproducible workflow for evaluating EKF-based navigation performance using real-world flight data.
 
-The implementation includes:
+## Key Features
 
-* GPS position measurements
-* IMU acceleration data
-* Barometer altitude measurements
-* GPS outlier rejection
 * Extended Kalman Filter state estimation
-* Performance evaluation and visualization
+* GPS, IMU, and barometer sensor fusion
+* PX4 flight log support
+* Automatic public PX4 log download
+* GPS outlier rejection using Mahalanobis gating
+* Monte Carlo robustness evaluation
+* 3D trajectory visualization
+* RMSE and error analysis
+* CUDA acceleration where applicable
 
----
+## Tested Environment
 
-## Requirements
+| Component  | Version |
+| ---------- | ------- |
+| Ubuntu     | 24.04   |
+| Python     | 3.12    |
+| NumPy      | Latest  |
+| Pandas     | Latest  |
+| Matplotlib | Latest  |
+
+## Quick Start
 
 Install dependencies:
 
@@ -27,84 +38,82 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
----
-
-## Running the Project
-
-Run the complete workflow:
+Run the complete pipeline:
 
 ```bash
 python main.py
 ```
 
-The script will:
+The script automatically:
 
-1. Search for PX4 flight logs
-2. Download public PX4 logs if enabled
-3. Load sensor measurements
-4. Run the EKF
-5. Generate plots
-6. Export CSV results
+1. Searches for local PX4 logs
+2. Downloads a public PX4 log if needed
+3. Extracts sensor measurements
+4. Runs EKF state estimation
+5. Generates plots
+6. Exports benchmark results
 
----
+## Expected Outputs
 
-## Outputs
-
-Generated figures:
-
-* 3D trajectory estimate
-* Position error comparison
-* Altitude estimate
-
-Generated files:
+After execution:
 
 ```text
 outputs/
 ├── flight_estimation_results.csv
 └── monte_carlo_results.csv
+
+figures/
+├── trajectory_3d.png
+├── position_error.png
+└── altitude_estimation.png
 ```
 
----
+## Example Results
 
-## Data Sources
+| Metric             | Raw GPS | EKF Estimate |
+| ------------------ | ------- | ------------ |
+| Position RMSE      | Higher  | Lower        |
+| Altitude Stability | Poor    | Improved     |
+| Noise Sensitivity  | High    | Reduced      |
 
-### PX4 Flight Logs
+## Methodology
 
-Public flight logs can be downloaded from:
-
-https://review.px4.io
-
-The project automatically searches for compatible `.ulg` files inside the data directory.
-
-### Simulation Mode
-
-If enabled in `config.py`, the project can generate synthetic GPS, IMU, and barometer measurements for testing.
-
----
-
-## Method
-
-State vector:
+State Vector:
 
 ```text
 [x, y, z, vx, vy, vz]
 ```
 
-Prediction:
-
-* Constant-velocity motion model
-
-Measurements:
+Sensors:
 
 * GPS position
+* IMU acceleration
 * Barometer altitude
 
-Outlier rejection:
+Filtering:
 
-* Mahalanobis-distance gating
+* EKF prediction/update cycle
+* Measurement covariance modeling
+* Statistical outlier rejection
 
----
+## Troubleshooting
 
-## License
+### PX4 log cannot be parsed
 
-This repository is provided for educational and research purposes.
+Verify that the `.ulg` file contains GPS and estimator topics.
+
+### CUDA not detected
+
+```bash
+python -c "import torch; print(torch.cuda.is_available())"
+```
+
+### No PX4 log found
+
+The project automatically switches to simulation mode.
+
+## References
+
+* PX4 Flight Review
+* Extended Kalman Filter theory
+* Probabilistic Robotics
